@@ -1,4 +1,4 @@
-package _2khuat.weatherapp;
+package _2khuat.weatherapp.Model;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,32 +1,38 @@
-package _2khuat.weatherapp;
+package _2khuat.weatherapp.Controller;
 
 import static javafx.application.Application.launch;
 
-import com.google.gson.JsonElement;
+import _2khuat.weatherapp.Model.APIClient;
+import _2khuat.weatherapp.Model.WeatherInfoParser;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelloApplication extends Application {
-    private static final String apiUrl = "https://api.open-meteo.com/v1/forecast?";
+    private String apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=53.5507&longitude=9.993&daily=sunrise,sunset";
     @Override
     public void start(Stage stage)  {
         Label weatherLabel = new Label("Loading weather data...");
         WeatherInfoParser infoParser = new WeatherInfoParser();
         new Thread(() -> {
-            
+            //apiUrl.concat("latitude=53.5507&longitude=9.993&hourly=temperature_2m,relative_humidity_2m");
             String weatherData = APIClient.getWeatherData(apiUrl);
             JsonObject dataAsJson = infoParser.parseWeatherData(weatherData);
-            Map<String, JsonElement> dataAsMap = dataAsJson.asMap();
+            List<String> keyList = new ArrayList<>(dataAsJson.keySet());
+            for (String key : keyList) {
+                dataAsJson.get(key);
+            }
             javafx.application.Platform.runLater(() -> {
-                weatherLabel.setText("Weather Data: " + dataAsJson.get("current"));
+                for(String data : keyList) {
+                    System.out.println(data + " = " + dataAsJson.get(data));
+                    weatherLabel.setText("Weather Data: \n" + data + " = " + dataAsJson.get(data));
+                }
             });
         }).start();
 

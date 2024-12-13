@@ -1,4 +1,4 @@
-package _2khuat.weatherapp;
+package _2khuat.weatherapp.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

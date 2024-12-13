@@ -25,8 +25,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-  mainModule = '_2khuat.weatherapp'
-  mainClass = '_2khuat.weatherapp.HelloApplication'
+  mainModule = '_2khuat.weatherapp.Controller'
+  mainClass = '_2khuat.weatherapp.Controller.HelloApplication'
 }
 
 javafx {
