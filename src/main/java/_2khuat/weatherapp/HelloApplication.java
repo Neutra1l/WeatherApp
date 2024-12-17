@@ -6,21 +6,34 @@ import _2khuat.weatherapp.GUI.WeatherAppGUI;
 import _2khuat.weatherapp.Model.APIClient;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class HelloApplication extends Application {
     private WeatherAppGUI _gui;
 
     @Override
-    public void start(Stage stage)  {
+    public void start(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        stage.setScene(new Scene(root, 300,205));
+        stage.show();
         APIClient apiClient = new APIClient();
         String weatherData = apiClient.getWeatherData();
         JsonObject dataAsJson = apiClient.parseWeatherData(weatherData);
         for(var member : dataAsJson.keySet()){
             System.out.println(member + " = " + dataAsJson.get(member));
         }
+
+
+        /**
+        _gui = new WeatherAppGUI(stage);
+        _gui.show();
+         **/
 
     }
         /**

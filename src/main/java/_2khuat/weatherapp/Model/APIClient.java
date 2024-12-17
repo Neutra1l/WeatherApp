@@ -10,8 +10,9 @@ import java.net.URL;
 import java.util.Set;
 
 public class APIClient {
-    private String _apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=53.5507&longitude=9.993&daily=sunrise,sunset";
+    private String _apiUrl = "https://api.open-meteo.com/v1/forecast?";
     private String weatherData;
+    private final String _coordinatesOfHamburg = "latitude=53.5507&longitude=9.993";
 
     public APIClient(){
         weatherData = getWeatherData(_apiUrl);
@@ -24,7 +25,7 @@ public class APIClient {
     private String getWeatherData(String apiUrl) {
         StringBuilder result = new StringBuilder();
         try {
-            URL url = new URL(apiUrl);
+            URL url = new URL(apiUrl + _coordinatesOfHamburg);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -43,6 +44,4 @@ public class APIClient {
     public JsonObject parseWeatherData(String jsonData) {
         return JsonParser.parseString(jsonData).getAsJsonObject();
     }
-
-
 }

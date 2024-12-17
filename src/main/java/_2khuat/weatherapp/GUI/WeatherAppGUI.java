@@ -24,6 +24,8 @@ public class WeatherAppGUI {
         _stage.setScene(_weatherInfoDisplayScene);
     }
 
+
+
     public void show(){
         _stage.show();
     }
