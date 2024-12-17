@@ -8,4 +8,6 @@ public class WeatherInfoParser {
         JsonObject jsonObject = JsonParser.parseString(jsonData).getAsJsonObject();
         return jsonObject;
     }
+
+
 }
