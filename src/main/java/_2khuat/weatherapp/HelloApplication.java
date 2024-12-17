@@ -4,20 +4,26 @@ import static javafx.application.Application.launch;
 
 import _2khuat.weatherapp.GUI.WeatherAppGUI;
 import _2khuat.weatherapp.Model.APIClient;
-import _2khuat.weatherapp.Model.WeatherInfoParser;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class HelloApplication extends Application {
-    private String _apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=53.5507&longitude=9.993&daily=sunrise,sunset";
     private WeatherAppGUI _gui;
+
     @Override
     public void start(Stage stage)  {
+        APIClient apiClient = new APIClient();
+        String weatherData = apiClient.getWeatherData();
+        JsonObject dataAsJson = apiClient.parseWeatherData(weatherData);
+        for(var member : dataAsJson.keySet()){
+            System.out.println(member + " = " + dataAsJson.get(member));
+        }
+
+    }
+        /**
         _gui = new WeatherAppGUI(stage);
         WeatherInfoParser infoParser = new WeatherInfoParser();
         Label weatherLabel = new Label();
@@ -38,6 +44,7 @@ public class HelloApplication extends Application {
         }).start();
         _gui.show();
     }
+         **/
         /**
         Label weatherLabel = new Label("Loading weather data...");
         WeatherInfoParser infoParser = new WeatherInfoParser();
@@ -62,8 +69,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setTitle("Weather App");
         stage.show();
-    }
-         **/
+    }**/
 
     public static void main(String[] args) {
         launch();

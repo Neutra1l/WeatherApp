@@ -1,12 +1,27 @@
 package _2khuat.weatherapp.Model;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Set;
 
 public class APIClient {
-    public static String getWeatherData(String apiUrl) {
+    private String _apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=53.5507&longitude=9.993&daily=sunrise,sunset";
+    private String weatherData;
+
+    public APIClient(){
+        weatherData = getWeatherData(_apiUrl);
+    }
+
+    public String getWeatherData(){
+        return this.weatherData;
+    }
+
+    private String getWeatherData(String apiUrl) {
         StringBuilder result = new StringBuilder();
         try {
             URL url = new URL(apiUrl);
@@ -24,4 +39,10 @@ public class APIClient {
         }
         return result.toString();
     }
+
+    public JsonObject parseWeatherData(String jsonData) {
+        return JsonParser.parseString(jsonData).getAsJsonObject();
+    }
+
+
 }
