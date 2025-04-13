@@ -4,30 +4,62 @@ import static javafx.application.Application.launch;
 
 import _2khuat.weatherapp.GUI.WeatherAppGUI;
 import _2khuat.weatherapp.Model.APIClient;
+import _2khuat.weatherapp.Model.City;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.Set;
 
 public class HelloApplication extends Application {
     private WeatherAppGUI _gui;
 
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
-        stage.setScene(new Scene(root, 300,205));
-        stage.show();
-        APIClient apiClient = new APIClient();
-        String weatherData = apiClient.getWeatherData();
-        JsonObject dataAsJson = apiClient.parseWeatherData(weatherData);
-        for(var member : dataAsJson.keySet()){
-            System.out.println(member + " = " + dataAsJson.get(member));
+        String _urlGeoCoding = "http://api.openweathermap.org/geo/1.0/direct?";
+        String query = "Hamburg";
+        String _apiKey = "c7c6feca22d0f169d76feacae1e95ecd";
+        String apiCall = _urlGeoCoding + "q=" + query + "&limit=2&appid=" + _apiKey;
+        StringBuilder result = new StringBuilder();
+        URL url = new URL(apiCall);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        InputStream inputStream = conn.getInputStream();
+        Reader reader = new InputStreamReader(inputStream);
+        JsonElement jsonElement = JsonParser.parseReader(reader);
+        JsonArray arr = jsonElement.getAsJsonArray();
+        for(JsonElement element : arr){
+            JsonObject object = element.getAsJsonObject();
+            System.out.println(object.get("name"));
         }
+
+        Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+        stage.setScene(new Scene(root, 1000,300));
+        stage.show();
 
 
         /**
@@ -83,6 +115,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Weather App");
         stage.show();
     }**/
+
 
     public static void main(String[] args) {
         launch();

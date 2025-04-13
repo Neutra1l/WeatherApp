@@ -2,6 +2,7 @@ module _2khuat.weatherapp {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
+    requires java.sql;
 
     opens _2khuat.weatherapp.GUI to javafx.fxml;
     opens _2khuat.weatherapp.Controller to javafx.fxml;

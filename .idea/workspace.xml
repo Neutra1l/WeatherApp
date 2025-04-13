@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fc205e-a383-4485-b9d4-4fb28ceb4160" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/LocalNames.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/Home.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/ViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/ViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/ViewController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,13 +61,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -81,7 +92,7 @@
     &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;GUIImpl&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -97,6 +108,11 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="_2khuat.weatherapp.Model" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.ApplicationRunner">
     <configuration name="ApplicationRunner" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
@@ -156,6 +172,7 @@
       <workItem from="1734302108755" duration="607000" />
       <workItem from="1734389971461" duration="5205000" />
       <workItem from="1734444217330" duration="976000" />
+      <workItem from="1744547116627" duration="6196000" />
     </task>
     <servers />
   </component>
