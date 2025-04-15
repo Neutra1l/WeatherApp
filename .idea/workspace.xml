@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fc205e-a383-4485-b9d4-4fb28ceb4160" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/WeatherAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/WeatherAppController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/Home.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -170,7 +166,7 @@
       <workItem from="1734444217330" duration="976000" />
       <workItem from="1744547116627" duration="8054000" />
       <workItem from="1744580350475" duration="467000" />
-      <workItem from="1744726138029" duration="2711000" />
+      <workItem from="1744726138029" duration="5111000" />
     </task>
     <servers />
   </component>
