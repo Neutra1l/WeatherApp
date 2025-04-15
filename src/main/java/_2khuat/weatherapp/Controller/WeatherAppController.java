@@ -7,7 +7,7 @@ public class WeatherAppController {
 
 
     public WeatherAppController(){
-        _apiClient = new APIClient();
+
 
     }
 

@@ -58,7 +58,7 @@ public class HelloApplication extends Application {
         }
 
         Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
-        stage.setScene(new Scene(root, 1000,300));
+        stage.setScene(new Scene(root, 1000,600));
         stage.show();
 
 
