@@ -4,6 +4,7 @@ plugins {
   id 'org.javamodularity.moduleplugin' version '1.8.12'
   id 'org.openjfx.javafxplugin' version '0.0.13'
   id 'org.beryx.jlink' version '2.25.0'
+  id 'com.diffplug.spotless' version '7.0.3'
 }
 
 group '_2khuat'
@@ -35,10 +36,25 @@ javafx {
 }
 
 dependencies {
-
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
   implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+spotless {
+  java {
+    // Use the default importOrder configuration
+    importOrder()
+    removeUnusedImports()
+    googleJavaFormat('1.17.0').aosp().skipJavadocFormatting()
+
+    // Choose one of these formatters.
+       // has its own section below
+
+    formatAnnotations()  // fixes formatting of type annotations, see below
+
+    licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+  }
 }
 
 test {
