@@ -56,6 +56,7 @@ public class HelloApplication extends Application {
             JsonObject object = element.getAsJsonObject();
             System.out.println(object.get("name"));
         }
+        System.out.println(Math.round(27.210505 * 10.0) / 10.0);
 
         Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
         stage.setScene(new Scene(root, 1000,600));

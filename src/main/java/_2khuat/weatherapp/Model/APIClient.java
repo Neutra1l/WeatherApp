@@ -10,10 +10,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class APIClient {
     private String _urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?";
     private String _urlGeoCoding = "http://api.openweathermap.org/geo/1.0/direct?";
+    private String _urlRestCountries = "https://restcountries.com/v3.1/alpha/";
     private final String _apiKey = "c7c6feca22d0f169d76feacae1e95ecd";
     private static APIClient singletonApiClient;
 
@@ -28,6 +30,14 @@ public class APIClient {
         return singletonApiClient;
     }
 
+    public String getCountryName(String countryCode){
+        String apiCall = _urlRestCountries + countryCode;
+        JsonElement restCountriesResponse = makeApiCall(apiCall);
+        JsonArray countryInfo = restCountriesResponse.getAsJsonArray();
+        JsonObject countryName = countryInfo.get(0).getAsJsonObject();
+        return countryName.get("name").getAsJsonObject().get("common").getAsString();
+    }
+
     public double[] getCoordinates(String query){
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKey;
         double[] coord = new double[2];
@@ -38,6 +48,17 @@ public class APIClient {
         coord[0] = object.get("lat").getAsDouble();
         coord[1] = object.get("lon").getAsDouble();
         return coord;
+    }
+
+    public String[] getStateAndCountry(String query){
+        String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKey;
+        JsonElement geoCodingResponse = makeApiCall(apiCall);
+        JsonArray locationInfo = geoCodingResponse.getAsJsonArray();
+        JsonElement element = locationInfo.get(0);
+        JsonObject object = element.getAsJsonObject();
+        String state = (object.get("state") != null) ? object.get("state").getAsString() : "";
+        String country = object.get("country").getAsString();
+        return new String[]{state, country};
     }
 
 
@@ -59,7 +80,7 @@ public class APIClient {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream inputStream = conn.getInputStream();
-            Reader reader = new InputStreamReader(inputStream);
+            Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             jsonElement = JsonParser.parseReader(reader);
         }
         catch(Exception e){
