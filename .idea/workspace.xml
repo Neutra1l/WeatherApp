@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fc205e-a383-4485-b9d4-4fb28ceb4160" name="Changes" comment="Integrate spotless">
+      <change afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/BihourlyTemperatureData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/GUI/WeatherAppGUI.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Model/APIClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/Home.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/_2khuat/weatherapp/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +105,7 @@
   "keyToString": {
     "Downloaded.Files.Path.Enabled": "false",
     "Gradle.Download Sources.executor": "Run",
-    "Gradle.WeatherApp [:HelloApplication.main()].executor": "Run",
+    "Gradle.WeatherApp [:HelloApplication.main()].executor": "Debug",
     "Gradle.WeatherApp [javadoc].executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
@@ -197,6 +199,7 @@
       <workItem from="1744580350475" duration="467000" />
       <workItem from="1744726138029" duration="5111000" />
       <workItem from="1744838562386" duration="5263000" />
+      <workItem from="1744888105298" duration="16326000" />
     </task>
     <servers />
   </component>
@@ -213,6 +216,21 @@
         <option value="GitHub.CommitStatus" />
       </list>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/_2khuat/weatherapp/Controller/HomeController.java</url>
+          <line>148</line>
+          <properties class="_2khuat.weatherapp.Controller.HomeController" method="handleKeyPressed">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

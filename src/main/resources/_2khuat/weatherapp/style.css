@@ -40,3 +40,7 @@
 .scroll-pane > .corner {
     -fx-background-color: black;
 }
+
+.onHover{
+    -fx-background-color: CYAN;
+}

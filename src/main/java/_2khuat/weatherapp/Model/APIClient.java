@@ -19,7 +19,8 @@ public class APIClient {
     private final String _urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?";
     private final String _urlGeoCoding = "https://api.openweathermap.org/geo/1.0/direct?";
     private final String _urlRestCountries = "https://restcountries.com/v3.1/alpha/";
-    private final String _apiKey = "c7c6feca22d0f169d76feacae1e95ecd";
+    private final String _urlOpenMeteo = "https://api.open-meteo.com/v1/forecast?";
+    private final String _apiKeyOpenWeather = "c7c6feca22d0f169d76feacae1e95ecd";
     private static APIClient singletonApiClient;
 
     private APIClient(){
@@ -41,8 +42,16 @@ public class APIClient {
         return countryName.get("name").getAsJsonObject().get("common").getAsString();
     }
 
+    public JsonObject getHourlyTemp(String query){
+        double[] coord = getCoordinates(query);
+        String apiCall = _urlOpenMeteo + "latitude=" + coord[0] + "&longitude=" + coord[1] + "&hourly=temperature_2m&forecast_days=1";
+        JsonElement openMeteoResponse = makeApiCall(apiCall);
+        JsonObject hourlyTempInfo = openMeteoResponse.getAsJsonObject();
+        return hourlyTempInfo;
+    }
+
     public double[] getCoordinates(String query){
-        String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKey;
+        String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         double[] coord = new double[2];
         JsonElement geoCodingResponse = makeApiCall(apiCall);
         JsonArray locationInfo = geoCodingResponse.getAsJsonArray();
@@ -54,7 +63,7 @@ public class APIClient {
     }
 
     public String[] getStateAndCountry(String query){
-        String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKey;
+        String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         JsonElement geoCodingResponse = makeApiCall(apiCall);
         JsonArray locationInfo = geoCodingResponse.getAsJsonArray();
         JsonElement element = locationInfo.get(0);
@@ -64,9 +73,8 @@ public class APIClient {
         return new String[]{state, country};
     }
 
-
     public JsonObject getWeatherData(double[] coord) {
-        String apiCall = _urlOpenWeather + "lat=" + coord[0] + "&" + "lon=" + coord[1] + "&appid=" + _apiKey;
+        String apiCall = _urlOpenWeather + "lat=" + coord[0] + "&" + "lon=" + coord[1] + "&appid=" + _apiKeyOpenWeather;
         JsonElement weatherData = makeApiCall(apiCall);
         return weatherData.getAsJsonObject();
     }
