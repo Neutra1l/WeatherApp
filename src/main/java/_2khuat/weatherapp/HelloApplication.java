@@ -2,7 +2,6 @@ package _2khuat.weatherapp;
 
 import static javafx.application.Application.launch;
 
-import _2khuat.weatherapp.GUI.WeatherAppGUI;
 import _2khuat.weatherapp.Model.APIClient;
 import _2khuat.weatherapp.Model.City;
 import com.google.gson.Gson;
@@ -27,7 +26,6 @@ import java.sql.SQLOutput;
 import java.util.Set;
 
 public class HelloApplication extends Application {
-    private WeatherAppGUI _gui;
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();

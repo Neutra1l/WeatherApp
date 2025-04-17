@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Controller class for home.fxml
+ */
 public class HomeController {
 
     @FXML
@@ -45,6 +48,10 @@ public class HomeController {
     TextField precipitation;
     APIClient apiClient = APIClient.getApiClient();
 
+    /**
+     * Handles mouse click event
+     * @param mouseEvent
+     */
     public void handleClick(MouseEvent mouseEvent) {
         if(mouseEvent.getSource() == btnSettings){
 
@@ -56,11 +63,14 @@ public class HomeController {
 
         }
         else if(mouseEvent.getSource() == okButton){
+            //Executes the API calls
             StringProperty query = searchField.textProperty();
             double[] coord = apiClient.getCoordinates(query.getValue());
             String[] stateAndCountry = apiClient.getStateAndCountry(query.getValue());
             String countryName = apiClient.getCountryName(stateAndCountry[1]);
             JsonObject weatherData = apiClient.getWeatherData(coord);
+
+            //Extract relevant information
             if(stateAndCountry[0].length() > 0) {
                 cityName.setText(query.getValue() + ", " + stateAndCountry[0] + ", " + countryName);
             }
@@ -80,6 +90,7 @@ public class HomeController {
             }
             else precipitationValue = 0;
 
+            //Set information for display
             temp.setText("Current temperature: " + tempValue + " °C");
             humidity.setText("Humidity level: " + humidityValue + "%");
             pressure.setText("Pressure level: " + pressureValue + " hPa");
@@ -91,7 +102,6 @@ public class HomeController {
             weatherInfoDisplayPane.setVisible(true);
 
         }
-
     }
 
     public void handleInputChange(InputMethodEvent inputMethodEvent) {

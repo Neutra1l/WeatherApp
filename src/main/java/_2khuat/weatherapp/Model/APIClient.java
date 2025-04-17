@@ -12,10 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The class responsible for execution of API calls. Is a singleton
+ */
 public class APIClient {
-    private String _urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?";
-    private String _urlGeoCoding = "http://api.openweathermap.org/geo/1.0/direct?";
-    private String _urlRestCountries = "https://restcountries.com/v3.1/alpha/";
+    private final String _urlOpenWeather = "https://api.openweathermap.org/data/2.5/weather?";
+    private final String _urlGeoCoding = "https://api.openweathermap.org/geo/1.0/direct?";
+    private final String _urlRestCountries = "https://restcountries.com/v3.1/alpha/";
     private final String _apiKey = "c7c6feca22d0f169d76feacae1e95ecd";
     private static APIClient singletonApiClient;
 
