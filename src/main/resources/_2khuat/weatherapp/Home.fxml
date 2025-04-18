@@ -52,10 +52,10 @@
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="154.0" prefWidth="174.0">
                                                    <children>
-                                                      <VBox layoutY="-6.0" prefHeight="160.0" prefWidth="234.0">
+                                                      <VBox prefHeight="154.0" prefWidth="206.0">
                                                          <children>
-                                                            <TextField fx:id="windSpeed" alignment="CENTER" editable="false" prefHeight="88.0" prefWidth="234.0" />
-                                                            <TextField fx:id="visibility" alignment="CENTER" editable="false" prefHeight="72.0" prefWidth="234.0" />
+                                                            <TextField fx:id="windSpeed" alignment="CENTER" editable="false" prefHeight="82.0" prefWidth="206.0" />
+                                                            <TextField fx:id="visibility" alignment="CENTER" editable="false" prefHeight="72.0" prefWidth="226.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -64,7 +64,7 @@
                                           </SplitPane>
                                           <SplitPane dividerPositions="0.5833333333333335, 0.7331460674157304" layoutX="243.0" layoutY="-6.0" orientation="VERTICAL" prefHeight="215.0" prefWidth="178.0">
                                              <items>
-                                                <TextField fx:id="temp" alignment="CENTER" editable="false" prefHeight="112.0" prefWidth="177.0" />
+                                                <TextField fx:id="temp" alignment="CENTER" editable="false" pickOnBounds="false" prefHeight="112.0" prefWidth="177.0" />
                                                 <TextField fx:id="feltTemp" alignment="CENTER" editable="false" prefHeight="68.0" prefWidth="234.0" />
                                                 <TextField fx:id="localTime" alignment="CENTER" editable="false" prefHeight="59.0" prefWidth="181.0" />
                                              </items>

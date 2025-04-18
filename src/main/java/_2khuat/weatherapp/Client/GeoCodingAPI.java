@@ -1,3 +1,4 @@
+/* (C) 2025 */
 package _2khuat.weatherapp.Client;
 
 import com.google.gson.JsonArray;
@@ -8,16 +9,16 @@ public class GeoCodingAPI extends AbstractAPIClient {
     private final String _urlGeoCoding = "https://api.openweathermap.org/geo/1.0/direct?";
     private static GeoCodingAPI geoCodingAPI;
 
-    private GeoCodingAPI(){}
+    private GeoCodingAPI() {}
 
-    public static GeoCodingAPI getInstance(){
-        if(geoCodingAPI == null){
+    public static GeoCodingAPI getInstance() {
+        if (geoCodingAPI == null) {
             return new GeoCodingAPI();
         }
         return geoCodingAPI;
     }
 
-    public double[] getCoordinates(String query){
+    public double[] getCoordinates(String query) {
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         double[] coord = new double[2];
         JsonElement geoCodingResponse = makeApiCall(apiCall);
@@ -29,7 +30,7 @@ public class GeoCodingAPI extends AbstractAPIClient {
         return coord;
     }
 
-    public String[] getStateAndCountry(String query){
+    public String[] getStateAndCountry(String query) {
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         JsonElement geoCodingResponse = makeApiCall(apiCall);
         JsonArray locationInfo = geoCodingResponse.getAsJsonArray();
@@ -37,6 +38,6 @@ public class GeoCodingAPI extends AbstractAPIClient {
         JsonObject object = element.getAsJsonObject();
         String state = (object.get("state") != null) ? object.get("state").getAsString() : "";
         String country = object.get("country").getAsString();
-        return new String[]{state, country};
+        return new String[] {state, country};
     }
 }
