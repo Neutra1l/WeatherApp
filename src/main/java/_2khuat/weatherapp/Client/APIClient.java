@@ -1,4 +1,4 @@
-package _2khuat.weatherapp.Model;
+package _2khuat.weatherapp.Client;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

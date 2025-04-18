@@ -1,6 +1,11 @@
-package _2khuat.weatherapp.Controller;
+package _2khuat.weatherapp.Controller.ControllerImpl;
 
-import _2khuat.weatherapp.Model.APIClient;
+import _2khuat.weatherapp.Client.GeoCodingAPI;
+import _2khuat.weatherapp.Client.OpenMeteoAPI;
+import _2khuat.weatherapp.Client.OpenWeatherAPI;
+import _2khuat.weatherapp.Client.RestCountriesAPI;
+import _2khuat.weatherapp.Controller.IController;
+import _2khuat.weatherapp.Client.APIClient;
 import _2khuat.weatherapp.Model.BihourlyTemperatureData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -27,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Controller class for home.fxml
  */
-public class HomeController {
+public class HomeController implements IController {
 
     @FXML
     Button okButton;
@@ -61,12 +66,17 @@ public class HomeController {
     TextField weatherDescription;
     @FXML
     LineChart hourlyTempChart;
-    APIClient apiClient = APIClient.getApiClient();
+
+    GeoCodingAPI geoCoding = GeoCodingAPI.getInstance();
+    OpenMeteoAPI openMeteo = OpenMeteoAPI.getInstance();
+    OpenWeatherAPI openWeather = OpenWeatherAPI.getInstance();
+    RestCountriesAPI restCountries = RestCountriesAPI.getInstance();
 
     /**
      * Handles mouse click event
      * @param mouseEvent
      */
+    @Override
     public void handleClick(MouseEvent mouseEvent) {
         if(mouseEvent.getSource() == btnSettings){
 
@@ -80,11 +90,11 @@ public class HomeController {
         else if(mouseEvent.getSource() == okButton){
             //Executes the API calls
             StringProperty query = searchField.textProperty();
-            double[] coord = apiClient.getCoordinates(query.getValue());
-            String[] stateAndCountry = apiClient.getStateAndCountry(query.getValue());
-            String countryName = apiClient.getCountryName(stateAndCountry[1]);
-            JsonObject weatherData = apiClient.getWeatherData(coord);
-            JsonObject hourlyTempInfo = apiClient.getHourlyTemp(query.getValue());
+            double[] coord = geoCoding.getCoordinates(query.getValue());
+            String[] stateAndCountry = geoCoding.getStateAndCountry(query.getValue());
+            String countryName = restCountries.getCountryName(stateAndCountry[1]);
+            JsonObject weatherData = openWeather.getWeatherData(coord);
+            JsonObject hourlyTempInfo = openMeteo.getHourlyTemp(query.getValue());
 
             //Extract relevant information
             if(stateAndCountry[0].length() > 0) {
@@ -151,7 +161,7 @@ public class HomeController {
 
     public void handleInputChange(InputMethodEvent inputMethodEvent) {
         StringProperty query = searchField.textProperty();
-        double[] coord = apiClient.getCoordinates(query.toString());
+        double[] coord = geoCoding.getCoordinates(query.toString());
         System.out.println(coord);
     }
 
