@@ -41,36 +41,35 @@
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="221.0" prefWidth="173.0">
                                                    <children>
-                                                      <VBox layoutX="-3.0" layoutY="-2.0" prefHeight="160.0" prefWidth="240.0">
+                                                      <VBox layoutX="-3.0" layoutY="-2.0" prefHeight="160.0" prefWidth="218.0">
                                                          <children>
-                                                            <TextField fx:id="humidity" alignment="CENTER" prefHeight="50.0" prefWidth="240.0" />
-                                                            <TextField fx:id="pressure" alignment="CENTER" prefHeight="51.0" prefWidth="240.0" />
-                                                            <TextField fx:id="visibility" alignment="CENTER" prefHeight="51.0" prefWidth="240.0" />
+                                                            <TextField fx:id="humidity" alignment="CENTER" editable="false" prefHeight="81.0" prefWidth="218.0" />
+                                                            <TextField fx:id="pressure" alignment="CENTER" editable="false" prefHeight="75.0" prefWidth="218.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="154.0" prefWidth="174.0">
                                                    <children>
-                                                      <VBox layoutX="2.0" layoutY="-3.0" prefHeight="160.0" prefWidth="234.0">
+                                                      <VBox layoutX="-4.0" layoutY="-3.0" prefHeight="160.0" prefWidth="218.0">
                                                          <children>
-                                                            <TextField fx:id="feltTemp" alignment="CENTER" prefHeight="50.0" prefWidth="234.0" />
-                                                            <TextField fx:id="windSpeed" alignment="CENTER" prefHeight="54.0" prefWidth="180.0" />
-                                                            <TextField fx:id="precipitation" alignment="CENTER" prefHeight="49.0" prefWidth="234.0" />
+                                                            <TextField fx:id="windSpeed" alignment="CENTER" editable="false" prefHeight="94.0" prefWidth="218.0" />
+                                                            <TextField fx:id="visibility" alignment="CENTER" editable="false" prefHeight="85.0" prefWidth="234.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
                                             </items>
                                           </SplitPane>
-                                          <SplitPane dividerPositions="0.7073991031390136" layoutX="243.0" layoutY="1.0" orientation="VERTICAL" prefHeight="180.0" prefWidth="181.0">
+                                          <SplitPane dividerPositions="0.6114341085271319, 0.8246124031007752" layoutX="243.0" layoutY="1.0" orientation="VERTICAL" prefHeight="208.0" prefWidth="182.0">
                                              <items>
-                                                <TextField fx:id="temp" alignment="CENTER" prefHeight="134.0" prefWidth="180.0" />
-                                                <TextField fx:id="localTime" alignment="CENTER" prefHeight="91.0" prefWidth="180.0" />
+                                                <TextField fx:id="temp" alignment="CENTER" editable="false" prefHeight="134.0" prefWidth="180.0" />
+                                                <TextField fx:id="feltTemp" alignment="CENTER" editable="false" prefHeight="42.0" prefWidth="181.0" />
+                                                <TextField fx:id="localTime" alignment="CENTER" editable="false" prefHeight="91.0" prefWidth="180.0" />
                                              </items>
                                           </SplitPane>
-                                          <ImageView fitHeight="123.0" fitWidth="143.0" layoutX="47.0" pickOnBounds="true" preserveRatio="true" />
-                                          <TextField fx:id="weatherDescription" alignment="CENTER" editable="false" layoutX="43.0" layoutY="134.0" prefHeight="46.0" prefWidth="151.0" />
+                                          <ImageView fx:id="weatherIcon" fitHeight="123.0" fitWidth="181.0" layoutX="55.0" pickOnBounds="true" preserveRatio="true" />
+                                          <TextField fx:id="weatherDescription" alignment="CENTER" editable="false" layoutX="6.0" layoutY="134.0" prefHeight="62.0" prefWidth="230.0" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="345.0" prefWidth="470.0">

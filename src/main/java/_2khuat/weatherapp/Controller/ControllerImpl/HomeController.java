@@ -22,6 +22,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -49,6 +51,7 @@ public class HomeController implements IController {
     @FXML TextField localTime;
     @FXML TextField weatherDescription;
     @FXML LineChart hourlyTempChart;
+    @FXML ImageView weatherIcon;
 
     GeoCodingAPI geoCoding = GeoCodingAPI.getInstance();
     OpenMeteoAPI openMeteo = OpenMeteoAPI.getInstance();
@@ -61,6 +64,7 @@ public class HomeController implements IController {
      */
     @Override
     public void handleClick(MouseEvent mouseEvent) {
+
         if (mouseEvent.getSource() == btnSettings) {
 
         } else if (mouseEvent.getSource() == btnAbout) {
@@ -79,55 +83,50 @@ public class HomeController implements IController {
             // Extract relevant information
             if (stateAndCountry[0].length() > 0) {
                 cityName.setText(query.getValue() + ", " + stateAndCountry[0] + ", " + countryName);
-            } else cityName.setText(query.getValue() + ", " + countryName);
+            } else {
+                cityName.setText(query.getValue() + ", " + countryName);
+            }
 
             JsonObject mainInfo = (JsonObject) weatherData.get("main");
             JsonArray weatherDescriptionArray = weatherData.get("weather").getAsJsonArray();
-            String weatherDesc =
-                    weatherDescriptionArray
-                            .get(0)
-                            .getAsJsonObject()
-                            .get("description")
-                            .getAsString();
+            String weatherDesc = weatherDescriptionArray.get(0).getAsJsonObject().get("description").getAsString();
+            int weatherId = weatherDescriptionArray.get(0).getAsJsonObject().get("id").getAsInt();
             int GMT = weatherData.get("timezone").getAsInt() / 3600;
             LocalDateTime localDateTime;
             if (GMT >= 0) {
                 localDateTime = LocalDateTime.now(ZoneId.of("GMT+" + GMT));
-            } else localDateTime = LocalDateTime.now(ZoneId.of("GMT" + GMT));
+            } else {
+                localDateTime = LocalDateTime.now(ZoneId.of("GMT" + GMT));
+            }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             String dateTimeAsString = localDateTime.format(formatter);
 
             int hour = localDateTime.getHour();
             AtomicInteger minute = new AtomicInteger(localDateTime.getMinute());
-            double tempValue =
-                    Math.round(mainInfo.get("temp").getAsDouble() - 273.15) * 10.0 / 10.0;
+            int tempValue = (int)(Math.round(mainInfo.get("temp").getAsDouble() - 273.15) * 10.0 / 10.0);
             int humidityValue = mainInfo.get("humidity").getAsInt();
             int pressureValue = mainInfo.get("pressure").getAsInt();
             int visibilityValue = weatherData.get("visibility").getAsInt();
-            double feltTempValue =
-                    Math.round(mainInfo.get("feels_like").getAsDouble() - 273.15) * 10.0 / 10.0;
+            int feltTempValue = (int)(Math.round(mainInfo.get("feels_like").getAsDouble() - 273.15) * 10.0 / 10.0);
             double windSpeedValue =
-                    Math.round(weatherData.get("wind").getAsJsonObject().get("speed").getAsDouble())
-                            * 10.0
-                            / 10.0;
+                    Math.round(weatherData.get("wind").getAsJsonObject().get("speed").getAsDouble()) * 10.0 / 10.0;
 
             JsonObject hourAndCorrespondingTemp = hourlyTempInfo.get("hourly").getAsJsonObject();
             JsonArray timesOfDay = hourAndCorrespondingTemp.get("time").getAsJsonArray();
             JsonArray tempsOfDay = hourAndCorrespondingTemp.get("temperature_2m").getAsJsonArray();
-            BihourlyTemperatureData bihourlyTemperatureData =
-                    new BihourlyTemperatureData(timesOfDay, tempsOfDay);
+            BihourlyTemperatureData bihourlyTemperatureData = new BihourlyTemperatureData(timesOfDay, tempsOfDay);
             String[] bihourlyTimesValue = bihourlyTemperatureData.getFormattedTimeStamps();
             double[] bihourlyTempsValue = bihourlyTemperatureData.getTemps();
 
             // Set information for display
-            Timeline timeline =
-                    new Timeline(
-                            new KeyFrame(
-                                    Duration.seconds(60),
-                                    event -> {
-                                        minute.getAndIncrement();
-                                        localTime.setText(hour + ":" + minute);
-                                    }));
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(60), event -> {
+                minute.getAndIncrement();
+                if (minute.intValue() < 10) {
+                    localTime.setText(hour + ":0" + minute);
+                } else {
+                    localTime.setText(hour + ":" + minute);
+                }
+            }));
             timeline.setCycleCount(Timeline.INDEFINITE); // Continue indefinitely
             timeline.play();
 
@@ -149,6 +148,29 @@ public class HomeController implements IController {
             }
             hourlyTempChart.getData().clear();
             hourlyTempChart.getData().add(XYData);
+
+            if(weatherId >= 200 && weatherId < 300){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/thunderstorm.png").toString()));
+            }
+            else if(weatherId >= 300 && weatherId < 400){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/drizzle.png").toString()));
+            }
+            else if(weatherId >= 500 && weatherId < 600){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/heavy-rain.png").toString()));
+            }
+            else if(weatherId >= 600 && weatherId < 700){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/snow.png").toString()));
+            }
+            else if(weatherId >= 700 && weatherId < 800){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/mist.png").toString()));
+            }
+            else if(weatherId == 800){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/clear_sky.png").toString()));
+            }
+            else if(weatherId > 800){
+                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/cloudy.png").toString()));
+            }
+
         }
     }
 
