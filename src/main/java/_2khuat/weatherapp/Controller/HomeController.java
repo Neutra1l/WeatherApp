@@ -3,28 +3,26 @@ package _2khuat.weatherapp.Controller;
 import _2khuat.weatherapp.Model.APIClient;
 import _2khuat.weatherapp.Model.BihourlyTemperatureData;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import javafx.application.Platform;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Controller class for home.fxml
@@ -48,8 +46,6 @@ public class HomeController {
     @FXML
     TextField temp;
     @FXML
-    TextField timezone;
-    @FXML
     TextField humidity;
     @FXML
     TextField pressure;
@@ -60,10 +56,13 @@ public class HomeController {
     @FXML
     TextField windSpeed;
     @FXML
-    TextField precipitation;
+    TextField localTime;
+    @FXML
+    TextField weatherDescription;
     @FXML
     LineChart hourlyTempChart;
     APIClient apiClient = APIClient.getApiClient();
+
     /**
      * Handles mouse click event
      * @param mouseEvent
@@ -94,21 +93,26 @@ public class HomeController {
             else cityName.setText(query.getValue() + ", " + countryName);
 
             JsonObject mainInfo = (JsonObject)weatherData.get("main");
+            JsonArray weatherDescriptionArray = weatherData.get("weather").getAsJsonArray();
+            String weatherDesc = weatherDescriptionArray.get(0).getAsJsonObject().get("description").getAsString();
             int GMT = weatherData.get("timezone").getAsInt() / 3600;
+            LocalDateTime localDateTime;
+            if (GMT >= 0){
+                localDateTime = LocalDateTime.now(ZoneId.of("GMT+" + GMT));
+            }
+            else localDateTime = LocalDateTime.now(ZoneId.of("GMT" + GMT));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            String dateTimeAsString = localDateTime.format(formatter);
 
-
+            int hour = localDateTime.getHour();
+            AtomicInteger minute = new AtomicInteger(localDateTime.getMinute());
             double tempValue = Math.round(mainInfo.get("temp").getAsDouble() - 273.15) * 10.0 / 10.0;
             int humidityValue = mainInfo.get("humidity").getAsInt();
             int pressureValue = mainInfo.get("pressure").getAsInt();
             int visibilityValue = weatherData.get("visibility").getAsInt();
             double feltTempValue = Math.round(mainInfo.get("feels_like").getAsDouble() - 273.15) * 10.0 / 10.0;
             double windSpeedValue = Math.round(weatherData.get("wind").getAsJsonObject().get("speed").getAsDouble()) * 10.0 / 10.0;
-            double precipitationValue;
-            if(weatherData.get("rain") != null){
-                precipitationValue = Math.round(weatherData.get("rain").getAsJsonObject().get("1h").getAsDouble()) * 10.0 / 10.0;
-            }
-            else precipitationValue = 0;
-            
+
             JsonObject hourAndCorrespondingTemp = hourlyTempInfo.get("hourly").getAsJsonObject();
             JsonArray timesOfDay = hourAndCorrespondingTemp.get("time").getAsJsonArray();
             JsonArray tempsOfDay = hourAndCorrespondingTemp.get("temperature_2m").getAsJsonArray();
@@ -117,18 +121,23 @@ public class HomeController {
             double[] bihourlyTempsValue = bihourlyTemperatureData.getTemps();
             
             //Set information for display
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(60), event ->
+            {
+                minute.getAndIncrement();
+                localTime.setText(hour + ":" + minute);
+            }));
+            timeline.setCycleCount(Timeline.INDEFINITE); // Continue indefinitely
+            timeline.play();
+
+            localTime.setText(hour + ":" + minute);
             temp.setText(tempValue + " °C");
             humidity.setText("Humidity level: " + humidityValue + "%");
             pressure.setText("Pressure level: " + pressureValue + " hPa");
             visibility.setText("Visibility: " + visibilityValue + " m");
             feltTemp.setText("Feels like: " + feltTempValue + " °C");
             windSpeed.setText("Wind speed: " + windSpeedValue + " m/s");
-            precipitation.setText("Precipitation: " + precipitationValue + " mm/h");
-            if (GMT >= 0) {
-                timezone.setText("GMT+" + GMT);
-            } else {
-                timezone.setText("GMT-" + GMT);
-            }
+            weatherDescription.setText(toTitle(weatherDesc));
+
             weatherInfoDisplayPane.setVisible(true);
             XYChart.Series<String, Number> XYData = new XYChart.Series<>();
             for(int i = 0; i < bihourlyTempsValue.length; i++){
@@ -152,6 +161,20 @@ public class HomeController {
                 okButton.fire();
         }
         });
+    }
+
+    private String toTitle(String str) {
+        String[] words = str.split(" ");
+        StringBuilder capitalized = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                capitalized.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+        return capitalized.toString().trim();
     }
 }
 

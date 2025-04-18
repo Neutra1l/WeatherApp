@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_2khuat.weatherapp.Controller.HomeController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_2khuat.weatherapp.Controller.HomeController">
     <children>
         <StackPane layoutX="240.0" layoutY="71.2" prefHeight="660.0" prefWidth="910.0" style="-fx-background-color: #02030A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -28,48 +28,48 @@
                             </image>
                         </ImageView>
                   <Button fx:id="okButton" defaultButton="true" layoutX="591.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#handleClick" style="-fx-background-color: #020203; -fx-border-color: #B7C3D7;" text="Ok" textAlignment="CENTER" textFill="#f7f7f7" textOverrun="LEADING_WORD_ELLIPSIS" />
-                  <SplitPane fx:id="weatherInfoDisplayPane" dividerPositions="0.7551381998582564" layoutY="95.0" orientation="VERTICAL" prefHeight="566.0" prefWidth="918.0">
+                  <SplitPane fx:id="weatherInfoDisplayPane" dividerPositions="0.7551381998582564, 0.5" layoutY="95.0" orientation="VERTICAL" prefHeight="566.0" prefWidth="910.0">
                     <items>
-                      <AnchorPane fx:id="currentWeatherDisplayPane" minHeight="0.0" minWidth="0.0" prefHeight="383.0" prefWidth="917.0" style="-fx-background-color: #02030A;" SplitPane.resizableWithParent="false">
+                      <AnchorPane fx:id="currentWeatherDisplayPane" minHeight="0.0" minWidth="0.0" prefHeight="423.0" prefWidth="902.0" style="-fx-background-color: #02030A;" SplitPane.resizableWithParent="false">
                            <children>
                               <TextField fx:id="cityName" alignment="CENTER" editable="false" layoutX="294.0" onMouseClicked="#handleClick" prefHeight="46.0" prefWidth="387.0" />
                               <SplitPane dividerPositions="0.46269633507853397" layoutX="-2.0" layoutY="58.0" prefHeight="365.0" prefWidth="918.0">
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="363.0" prefWidth="422.0">
                                        <children>
-                                          <ImageView fx:id="weatherIcon" fitHeight="88.0" fitWidth="129.0" layoutX="57.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="weatherIcon" fitHeight="102.0" fitWidth="193.0" layoutX="18.0" pickOnBounds="true" preserveRatio="true" />
                                           <SplitPane fx:id="miscInfoDisplay" dividerPositions="0.5016778523489933" layoutX="-1.0" layoutY="208.0" prefHeight="156.0" prefWidth="422.0">
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="221.0" prefWidth="173.0">
                                                    <children>
-                                                      <VBox layoutX="-3.0" layoutY="-2.0" prefHeight="160.0" prefWidth="240.0">
+                                                      <VBox layoutX="-3.0" layoutY="-2.0" prefHeight="160.0" prefWidth="215.0">
                                                          <children>
-                                                            <TextField fx:id="humidity" alignment="CENTER" prefHeight="50.0" prefWidth="240.0" />
-                                                            <TextField fx:id="pressure" alignment="CENTER" prefHeight="51.0" prefWidth="240.0" />
-                                                            <TextField fx:id="visibility" alignment="CENTER" prefHeight="51.0" prefWidth="240.0" />
+                                                            <TextField fx:id="humidity" alignment="CENTER" editable="false" prefHeight="84.0" prefWidth="215.0" />
+                                                            <TextField fx:id="pressure" alignment="CENTER" editable="false" prefHeight="73.0" prefWidth="215.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="154.0" prefWidth="174.0">
                                                    <children>
-                                                      <VBox layoutX="2.0" layoutY="-3.0" prefHeight="160.0" prefWidth="234.0">
+                                                      <VBox layoutY="-6.0" prefHeight="160.0" prefWidth="234.0">
                                                          <children>
-                                                            <TextField fx:id="feltTemp" alignment="CENTER" prefHeight="50.0" prefWidth="234.0" />
-                                                            <TextField fx:id="windSpeed" alignment="CENTER" prefHeight="54.0" prefWidth="180.0" />
-                                                            <TextField fx:id="precipitation" alignment="CENTER" prefHeight="49.0" prefWidth="234.0" />
+                                                            <TextField fx:id="windSpeed" alignment="CENTER" editable="false" prefHeight="88.0" prefWidth="234.0" />
+                                                            <TextField fx:id="visibility" alignment="CENTER" editable="false" prefHeight="72.0" prefWidth="234.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
                                             </items>
                                           </SplitPane>
-                                          <SplitPane dividerPositions="0.7073991031390136" layoutX="243.0" layoutY="1.0" orientation="VERTICAL" prefHeight="180.0" prefWidth="181.0">
+                                          <SplitPane dividerPositions="0.5833333333333335, 0.7331460674157304" layoutX="243.0" layoutY="-6.0" orientation="VERTICAL" prefHeight="215.0" prefWidth="178.0">
                                              <items>
-                                                <TextField fx:id="temp" alignment="CENTER" prefHeight="134.0" prefWidth="180.0" />
-                                                <TextField fx:id="timezone" alignment="CENTER" prefHeight="91.0" prefWidth="180.0" />
+                                                <TextField fx:id="temp" alignment="CENTER" editable="false" prefHeight="112.0" prefWidth="177.0" />
+                                                <TextField fx:id="feltTemp" alignment="CENTER" editable="false" prefHeight="68.0" prefWidth="234.0" />
+                                                <TextField fx:id="localTime" alignment="CENTER" editable="false" prefHeight="59.0" prefWidth="181.0" />
                                              </items>
                                           </SplitPane>
+                                          <TextField fx:id="weatherDescription" alignment="CENTER" editable="false" layoutX="40.0" layoutY="119.0" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="345.0" prefWidth="470.0">
@@ -88,6 +88,7 @@
                            </children>
                         </AnchorPane>
                       <AnchorPane fx:id="nextDaysWeatherDisplayPane" minHeight="0.0" minWidth="0.0" prefHeight="130.0" prefWidth="917.0" />
+                        <AnchorPane fx:id="nextDaysWeatherDisplayPane1" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="130.0" prefWidth="917.0" />
                     </items>
                   </SplitPane>
                     </children>
