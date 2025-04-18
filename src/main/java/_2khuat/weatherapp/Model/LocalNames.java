@@ -1,4 +1,4 @@
+/* (C) 2025 */
 package _2khuat.weatherapp.Model;
 
-public class LocalNames {
-}
+public class LocalNames {}
