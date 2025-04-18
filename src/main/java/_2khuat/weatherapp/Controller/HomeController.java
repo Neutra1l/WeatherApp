@@ -117,7 +117,7 @@ public class HomeController {
             double[] bihourlyTempsValue = bihourlyTemperatureData.getTemps();
             
             //Set information for display
-            temp.setText("Current temperature: " + tempValue + " °C");
+            temp.setText(tempValue + " °C");
             humidity.setText("Humidity level: " + humidityValue + "%");
             pressure.setText("Pressure level: " + pressureValue + " hPa");
             visibility.setText("Visibility: " + visibilityValue + " m");
