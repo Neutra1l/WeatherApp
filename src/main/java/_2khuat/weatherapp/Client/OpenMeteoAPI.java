@@ -1,6 +1,8 @@
 /* (C) 2025 */
 package _2khuat.weatherapp.Client;
 
+import _2khuat.weatherapp.Model.BihourlyTemperatureData;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -17,7 +19,7 @@ public class OpenMeteoAPI extends AbstractAPIClient {
         } else return openMeteoAPI;
     }
 
-    public JsonObject getHourlyTemp(String query) {
+    public BihourlyTemperatureData getBihourlyTemp(String query){
         double[] coord = geoCodingAPI.getCoordinates(query);
         String apiCall =
                 _urlOpenMeteo
@@ -26,8 +28,10 @@ public class OpenMeteoAPI extends AbstractAPIClient {
                         + "&longitude="
                         + coord[1]
                         + "&hourly=temperature_2m&forecast_days=1";
-        JsonElement openMeteoResponse = makeApiCall(apiCall);
-        JsonObject hourlyTempInfo = openMeteoResponse.getAsJsonObject();
-        return hourlyTempInfo;
+        JsonObject responseJson = makeApiCall(apiCall).getAsJsonObject();
+        String responseString = responseJson.toString();
+        Gson gson = new Gson();
+        BihourlyTemperatureData bihourlyTemperatureData = gson.fromJson(responseString, BihourlyTemperatureData.class);
+        return bihourlyTemperatureData;
     }
 }

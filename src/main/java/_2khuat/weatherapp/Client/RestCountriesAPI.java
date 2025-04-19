@@ -18,11 +18,11 @@ public class RestCountriesAPI extends AbstractAPIClient {
         return restCountriesAPI;
     }
 
-    public String getCountryName(String countryCode) {
-        String apiCall = _urlRestCountries + countryCode;
-        JsonElement restCountriesResponse = makeApiCall(apiCall);
-        JsonArray countryInfo = restCountriesResponse.getAsJsonArray();
-        JsonObject countryName = countryInfo.get(0).getAsJsonObject();
-        return countryName.get("name").getAsJsonObject().get("common").getAsString();
+    public String getCountryName(String countryCode){
+        JsonElement response = makeApiCall(_urlRestCountries + countryCode);
+        JsonObject firstEntry = response.getAsJsonArray().get(0).getAsJsonObject();
+        String name = firstEntry.get("name").getAsJsonObject().get("common").getAsString();
+        return name;
     }
+
 }
