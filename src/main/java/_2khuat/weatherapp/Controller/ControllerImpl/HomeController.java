@@ -7,15 +7,16 @@ import _2khuat.weatherapp.Client.OpenWeatherAPI;
 import _2khuat.weatherapp.Client.RestCountriesAPI;
 import _2khuat.weatherapp.Controller.IController;
 import _2khuat.weatherapp.Model.BihourlyTemperatureData;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import _2khuat.weatherapp.Model.Helper.WeatherDescription;
+import _2khuat.weatherapp.Model.Location;
+import _2khuat.weatherapp.Model.WeatherDataCurrent;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -72,112 +73,144 @@ public class HomeController implements IController {
         } else if (mouseEvent.getSource() == btnPackages) {
 
         } else if (mouseEvent.getSource() == okButton) {
-            // Executes the API calls
-            StringProperty query = searchField.textProperty();
-            double[] coord = geoCoding.getCoordinates(query.getValue());
-            String[] stateAndCountry = geoCoding.getStateAndCountry(query.getValue());
-            String countryName = restCountries.getCountryName(stateAndCountry[1]);
-            JsonObject weatherData = openWeather.getWeatherData(coord);
-            JsonObject hourlyTempInfo = openMeteo.getHourlyTemp(query.getValue());
+            //makes the necessary API calls
+            String query = searchField.textProperty().getValue();
+            Location location = geoCoding.getLocation(query);
+            double lat = location.getLat();
+            double lon = location.getLon();
+            WeatherDataCurrent weatherDataCurrent = openWeather.getWeatherDataCurrent(lat, lon);
+            BihourlyTemperatureData bihourlyTemperatureData = openMeteo.getBihourlyTemp(query);
+            String countryName = restCountries.getCountryName(location.getCountry());
 
-            // Extract relevant information
-            if (stateAndCountry[0].length() > 0) {
-                cityName.setText(query.getValue() + ", " + stateAndCountry[0] + ", " + countryName);
-            } else {
-                cityName.setText(query.getValue() + ", " + countryName);
-            }
-
-            JsonObject mainInfo = (JsonObject) weatherData.get("main");
-            JsonArray weatherDescriptionArray = weatherData.get("weather").getAsJsonArray();
-            String weatherDesc = weatherDescriptionArray.get(0).getAsJsonObject().get("description").getAsString();
-            int weatherId = weatherDescriptionArray.get(0).getAsJsonObject().get("id").getAsInt();
-            int GMT = weatherData.get("timezone").getAsInt() / 3600;
-            LocalDateTime localDateTime;
-            if (GMT >= 0) {
-                localDateTime = LocalDateTime.now(ZoneId.of("GMT+" + GMT));
-            } else {
-                localDateTime = LocalDateTime.now(ZoneId.of("GMT" + GMT));
-            }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            String dateTimeAsString = localDateTime.format(formatter);
-
+            //prepares the necessary variables
+            String formattedTimezone = weatherDataCurrent.getFormattedTimezone();
+            LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of(formattedTimezone));
             int hour = localDateTime.getHour();
             AtomicInteger minute = new AtomicInteger(localDateTime.getMinute());
-            int tempValue = (int)(Math.round(mainInfo.get("temp").getAsDouble() - 273.15) * 10.0 / 10.0);
-            int humidityValue = mainInfo.get("humidity").getAsInt();
-            int pressureValue = mainInfo.get("pressure").getAsInt();
-            int visibilityValue = weatherData.get("visibility").getAsInt();
-            int feltTempValue = (int)(Math.round(mainInfo.get("feels_like").getAsDouble() - 273.15) * 10.0 / 10.0);
-            double windSpeedValue =
-                    Math.round(weatherData.get("wind").getAsJsonObject().get("speed").getAsDouble()) * 10.0 / 10.0;
+            int tempValue = (int)(weatherDataCurrent.getMain().getTemp() - 273.15);
+            int humidityValue = weatherDataCurrent.getMain().getHumidity();
+            int pressureValue = weatherDataCurrent.getMain().getPressure();
+            int visibilityValue = weatherDataCurrent.getVisibility();
+            int feltTempValue = (int)(weatherDataCurrent.getMain().getFeels_like() - 273.15);
+            int windSpeedValue = (int)weatherDataCurrent.getWind().getSpeed();
+            WeatherDescription[] weatherDescArray = weatherDataCurrent.getWeather();
+            String weatherDesc = weatherDescArray[0].getDescription();
+            double[] bihourlyTempsValue = bihourlyTemperatureData.getHourly().getEveryOtherTemp();
+            String[] bihourlyTimesValue = bihourlyTemperatureData.getFormattedBihourlyTime();
 
-            JsonObject hourAndCorrespondingTemp = hourlyTempInfo.get("hourly").getAsJsonObject();
-            JsonArray timesOfDay = hourAndCorrespondingTemp.get("time").getAsJsonArray();
-            JsonArray tempsOfDay = hourAndCorrespondingTemp.get("temperature_2m").getAsJsonArray();
-            BihourlyTemperatureData bihourlyTemperatureData = new BihourlyTemperatureData(timesOfDay, tempsOfDay);
-            String[] bihourlyTimesValue = bihourlyTemperatureData.getFormattedTimeStamps();
-            double[] bihourlyTempsValue = bihourlyTemperatureData.getTemps();
-
-            // Set information for display
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(60), event -> {
-                minute.getAndIncrement();
-                if (minute.intValue() < 10) {
-                    localTime.setText(hour + ":0" + minute);
-                } else {
-                    localTime.setText(hour + ":" + minute);
-                }
-            }));
-            timeline.setCycleCount(Timeline.INDEFINITE); // Continue indefinitely
-            timeline.play();
-
-            localTime.setText(hour + ":" + minute);
-            temp.setText(tempValue + " °C");
-            humidity.setText("Humidity level: " + humidityValue + "%");
-            pressure.setText("Pressure level: " + pressureValue + " hPa");
-            visibility.setText("Visibility: " + visibilityValue + " m");
-            feltTemp.setText("Feels like: " + feltTempValue + " °C");
-            windSpeed.setText("Wind speed: " + windSpeedValue + " m/s");
-            weatherDescription.setText(toTitle(weatherDesc));
-
+            //Set information for display
+            if(location.getState() != null) {
+                cityName.setText(location.getName() + ", " + location.getState() + ", " + countryName);
+            }
+            else cityName.setText(location.getName() + ", " + countryName);
+            setLocalTime(minute, hour);
+            setTexts(
+                    hour,
+                    minute,
+                    tempValue,
+                    humidityValue,
+                    pressureValue,
+                    visibilityValue,
+                    feltTempValue,
+                    windSpeedValue,
+                    weatherDesc);
+            plotOnLineChart(bihourlyTempsValue, bihourlyTimesValue);
+            setWeatherIcon(weatherDescArray[0].getId());
             weatherInfoDisplayPane.setVisible(true);
-            XYChart.Series<String, Number> XYData = new XYChart.Series<>();
-            for (int i = 0; i < bihourlyTempsValue.length; i++) {
-                XYChart.Data<String, Number> dataPoint =
-                        new XYChart.Data<>(bihourlyTimesValue[i], bihourlyTempsValue[i]);
-                XYData.getData().add(dataPoint);
-            }
-            hourlyTempChart.getData().clear();
-            hourlyTempChart.getData().add(XYData);
-
-            if(weatherId >= 200 && weatherId < 300){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/thunderstorm.png").toString()));
-            }
-            else if(weatherId >= 300 && weatherId < 400){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/drizzle.png").toString()));
-            }
-            else if(weatherId >= 500 && weatherId < 600){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/heavy-rain.png").toString()));
-            }
-            else if(weatherId >= 600 && weatherId < 700){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/snow.png").toString()));
-            }
-            else if(weatherId >= 700 && weatherId < 800){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/mist.png").toString()));
-            }
-            else if(weatherId == 800){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/clear_sky.png").toString()));
-            }
-            else if(weatherId > 800){
-                weatherIcon.setImage(new Image(getClass().getResource("WeatherImages/cloudy.png").toString()));
-            }
-
         }
     }
 
-    public void handleInputChange(InputMethodEvent inputMethodEvent) {
-        StringProperty query = searchField.textProperty();
-        double[] coord = geoCoding.getCoordinates(query.toString());
-        System.out.println(coord);
+    private void setWeatherIcon(int weatherId) {
+        if (weatherId >= 200 && weatherId < 300) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(
+                                            getClass()
+                                                    .getResource("WeatherImages/thunderstorm.png"))
+                                    .toString()));
+        } else if (weatherId >= 300 && weatherId < 400) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(
+                                            getClass().getResource("WeatherImages/drizzle.png"))
+                                    .toString()));
+        } else if (weatherId >= 500 && weatherId < 600) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(
+                                            getClass().getResource("WeatherImages/heavy-rain.png"))
+                                    .toString()));
+        } else if (weatherId >= 600 && weatherId < 700) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(getClass().getResource("WeatherImages/snow.png"))
+                                    .toString()));
+        } else if (weatherId >= 700 && weatherId < 800) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(getClass().getResource("WeatherImages/mist.png"))
+                                    .toString()));
+        } else if (weatherId == 800) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(
+                                            getClass().getResource("WeatherImages/clear_sky.png"))
+                                    .toString()));
+        } else if (weatherId > 800) {
+            weatherIcon.setImage(
+                    new Image(
+                            Objects.requireNonNull(
+                                            getClass().getResource("WeatherImages/cloudy.png"))
+                                    .toString()));
+        }
+    }
+
+    private void setLocalTime(AtomicInteger minute, int hour) {
+        Timeline timeline =
+                new Timeline(
+                        new KeyFrame(
+                                Duration.seconds(60),
+                                event -> {
+                                    minute.getAndIncrement();
+                                    if (minute.intValue() < 10) {
+                                        localTime.setText(hour + ":0" + minute);
+                                    } else {
+                                        localTime.setText(hour + ":" + minute);
+                                    }
+                                }));
+        timeline.setCycleCount(Timeline.INDEFINITE); // Continue indefinitely
+        timeline.play();
+    }
+
+    private void setTexts(
+            int hour,
+            AtomicInteger minute,
+            int tempValue,
+            int humidityValue,
+            int pressureValue,
+            int visibilityValue,
+            int feltTempValue,
+            double windSpeedValue,
+            String weatherDesc) {
+        localTime.setText(hour + ":" + minute);
+        temp.setText(tempValue + " °C");
+        humidity.setText("Humidity level: " + humidityValue + "%");
+        pressure.setText("Pressure level: " + pressureValue + " hPa");
+        visibility.setText("Visibility: " + visibilityValue + " m");
+        feltTemp.setText("Feels like: " + feltTempValue + " °C");
+        windSpeed.setText("Wind speed: " + windSpeedValue + " m/s");
+        weatherDescription.setText(toTitle(weatherDesc));
+    }
+
+    private void plotOnLineChart(double[] bihourlyTempsValue, String[] bihourlyTimesValue) {
+        XYChart.Series<String, Number> XYData = new XYChart.Series<>();
+        for (int i = 0; i < bihourlyTempsValue.length; i++) {
+            XYChart.Data<String, Number> dataPoint =
+                    new XYChart.Data<>(bihourlyTimesValue[i], bihourlyTempsValue[i]);
+            XYData.getData().add(dataPoint);
+        }
+        hourlyTempChart.getData().clear();
+        hourlyTempChart.getData().add(XYData);
     }
 
     public void handleKeyPressed(KeyEvent e) {
@@ -203,4 +236,6 @@ public class HomeController implements IController {
         }
         return capitalized.toString().trim();
     }
+
+    public void handleInputChange(InputMethodEvent inputMethodEvent) {}
 }

@@ -1,6 +1,8 @@
 /* (C) 2025 */
 package _2khuat.weatherapp.Client;
 
+import _2khuat.weatherapp.Model.Location;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,14 +32,13 @@ public class GeoCodingAPI extends AbstractAPIClient {
         return coord;
     }
 
-    public String[] getStateAndCountry(String query) {
+    public Location getLocation(String query) {
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         JsonElement geoCodingResponse = makeApiCall(apiCall);
-        JsonArray locationInfo = geoCodingResponse.getAsJsonArray();
-        JsonElement element = locationInfo.get(0);
-        JsonObject object = element.getAsJsonObject();
-        String state = (object.get("state") != null) ? object.get("state").getAsString() : "";
-        String country = object.get("country").getAsString();
-        return new String[] {state, country};
+        JsonObject responseJson = geoCodingResponse.getAsJsonArray().get(0).getAsJsonObject();
+        String responseString = responseJson.toString();
+        Gson gson = new Gson();
+        Location location = gson.fromJson(responseString, Location.class);
+        return location;
     }
 }

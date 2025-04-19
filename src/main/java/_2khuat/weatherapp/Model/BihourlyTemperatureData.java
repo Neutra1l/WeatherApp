@@ -1,37 +1,25 @@
 /* (C) 2025 */
 package _2khuat.weatherapp.Model;
 
-import com.google.gson.JsonArray;
+import _2khuat.weatherapp.Model.Helper.HourlyTemperature;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class BihourlyTemperatureData {
+    HourlyTemperature hourly;
 
-    private double[] temps;
-    private String[] timeStamps;
-
-    public BihourlyTemperatureData(JsonArray timesOfDay, JsonArray tempsOfDay) {
-        temps = new double[12];
-        timeStamps = new String[12];
-
-        for (int i = 0, j = 0; i < tempsOfDay.size(); i += 2, j++) {
-            temps[j] = tempsOfDay.get(i).getAsDouble();
-            timeStamps[j] = timesOfDay.get(i).getAsString();
-        }
-    }
-
-    public double[] getTemps() {
-        return temps;
-    }
-
-    public String[] getTimeStamps() {
-        return timeStamps;
-    }
-
-    public String[] getFormattedTimeStamps() {
-        String[] formattedTimeStamps = new String[timeStamps.length];
+    public String[] getFormattedBihourlyTime(){
+        String[] bihourlyTime = hourly.getEveryOtherHour();
+        String[] formattedTimeStamps = new String[bihourlyTime.length];
         int i = 0;
-        for (String time : timeStamps) {
+        for (String time : bihourlyTime) {
             LocalDateTime dateTime = LocalDateTime.parse(time);
             String hourlyTimeValue = dateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             formattedTimeStamps[i] = hourlyTimeValue;
@@ -40,3 +28,4 @@ public class BihourlyTemperatureData {
         return formattedTimeStamps;
     }
 }
+

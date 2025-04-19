@@ -8,7 +8,8 @@ module _2khuat.weatherapp {
     opens _2khuat.weatherapp.Controller.ControllerImpl to
             javafx.fxml;
     opens _2khuat.weatherapp.Model to
-            javafx.fxml;
+            javafx.fxml,
+            com.google.gson;
     opens _2khuat.weatherapp to
             javafx.fxml;
 
@@ -16,4 +17,5 @@ module _2khuat.weatherapp {
 
     opens _2khuat.weatherapp.Client to
             javafx.fxml;
+    opens _2khuat.weatherapp.Model.Helper to com.google.gson, javafx.fxml;
 }

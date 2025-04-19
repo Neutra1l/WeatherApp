@@ -1,6 +1,8 @@
 /* (C) 2025 */
 package _2khuat.weatherapp.Client;
 
+import _2khuat.weatherapp.Model.WeatherDataCurrent;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -17,17 +19,19 @@ public class OpenWeatherAPI extends AbstractAPIClient {
         return openWeatherAPI;
     }
 
-    public JsonObject getWeatherData(double[] coord) {
-        String apiCall =
-                _urlOpenWeather
-                        + "lat="
-                        + coord[0]
-                        + "&"
-                        + "lon="
-                        + coord[1]
-                        + "&appid="
-                        + _apiKeyOpenWeather;
-        JsonElement weatherData = makeApiCall(apiCall);
-        return weatherData.getAsJsonObject();
+    public WeatherDataCurrent getWeatherDataCurrent(double lat, double lon){
+        String apiCall = _urlOpenWeather
+                + "lat="
+                + lat
+                + "&"
+                + "lon="
+                + lon
+                + "&appid="
+                + _apiKeyOpenWeather;
+        JsonObject weatherDataCurrentJson = makeApiCall(apiCall).getAsJsonObject();
+        String weatherDataCurrentString = weatherDataCurrentJson.toString();
+        Gson gson = new Gson();
+        WeatherDataCurrent weatherDataCurrent = gson.fromJson(weatherDataCurrentString, WeatherDataCurrent.class);
+        return weatherDataCurrent;
     }
 }
