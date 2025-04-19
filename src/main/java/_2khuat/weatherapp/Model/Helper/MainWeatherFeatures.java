@@ -1,9 +1,13 @@
+/* (C) 2025 */
 package _2khuat.weatherapp.Model.Helper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Container for the most relevant weather parameters. To be used within WeatherDataCurrent container.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

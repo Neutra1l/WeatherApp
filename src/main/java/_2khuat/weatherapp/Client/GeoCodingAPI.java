@@ -20,6 +20,11 @@ public class GeoCodingAPI extends AbstractAPIClient {
         return geoCodingAPI;
     }
 
+    /**
+     * Gets the coordinates of the query in the parameter.
+     * @param query the name of the city the user inputs.
+     * @return coordinates of the city
+     */
     public double[] getCoordinates(String query) {
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         double[] coord = new double[2];
@@ -32,6 +37,12 @@ public class GeoCodingAPI extends AbstractAPIClient {
         return coord;
     }
 
+    /**
+     * Gets an instance of the Location model based on the query.
+     *
+     * @param query the name of the city the user inputs
+     * @return location model of the query
+     */
     public Location getLocation(String query) {
         String apiCall = _urlGeoCoding + "q=" + query + "&limit=1&appid=" + _apiKeyOpenWeather;
         JsonElement geoCodingResponse = makeApiCall(apiCall);

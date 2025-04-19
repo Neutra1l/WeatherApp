@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Container for predicted sunrise and sunset time. To be used within WeatherDataCurrent container.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

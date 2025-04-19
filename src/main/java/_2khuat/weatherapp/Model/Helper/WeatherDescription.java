@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Container for weather descriptions. To be used within WeatherDataCurrent container.
+ */
 @AllArgsConstructor
 @Setter
 @Getter

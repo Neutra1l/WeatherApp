@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Container for wind parameters. To be used within WeatherDataCurrent container.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

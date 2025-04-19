@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+/**
+ * Container for necessary parameters of locations.
+ */
 public class Location {
     private String name;
     private JsonObject local_names;

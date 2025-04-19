@@ -10,11 +10,9 @@ import _2khuat.weatherapp.Model.BihourlyTemperatureData;
 import _2khuat.weatherapp.Model.Helper.WeatherDescription;
 import _2khuat.weatherapp.Model.Location;
 import _2khuat.weatherapp.Model.WeatherDataCurrent;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -73,40 +71,36 @@ public class HomeController implements IController {
         } else if (mouseEvent.getSource() == btnPackages) {
 
         } else if (mouseEvent.getSource() == okButton) {
-            //makes the necessary API calls
+            // makes the necessary API calls
             String query = searchField.textProperty().getValue();
             Location location = geoCoding.getLocation(query);
-            double lat = location.getLat();
-            double lon = location.getLon();
-            WeatherDataCurrent weatherDataCurrent = openWeather.getWeatherDataCurrent(lat, lon);
+            WeatherDataCurrent weatherDataCurrent =
+                    openWeather.getWeatherDataCurrent(location.getLat(), location.getLon());
             BihourlyTemperatureData bihourlyTemperatureData = openMeteo.getBihourlyTemp(query);
             String countryName = restCountries.getCountryName(location.getCountry());
 
-            //prepares the necessary variables
+            // prepares the necessary variables
             String formattedTimezone = weatherDataCurrent.getFormattedTimezone();
             LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of(formattedTimezone));
-            int hour = localDateTime.getHour();
-            AtomicInteger minute = new AtomicInteger(localDateTime.getMinute());
-            int tempValue = (int)(weatherDataCurrent.getMain().getTemp() - 273.15);
+            int hourValue = localDateTime.getHour();
+            int minuteValue = localDateTime.getMinute();
+            int tempValue = (int) (weatherDataCurrent.getMain().getTemp() - 273.15);
             int humidityValue = weatherDataCurrent.getMain().getHumidity();
             int pressureValue = weatherDataCurrent.getMain().getPressure();
             int visibilityValue = weatherDataCurrent.getVisibility();
-            int feltTempValue = (int)(weatherDataCurrent.getMain().getFeels_like() - 273.15);
-            int windSpeedValue = (int)weatherDataCurrent.getWind().getSpeed();
+            int feltTempValue = (int) (weatherDataCurrent.getMain().getFeels_like() - 273.15);
+            int windSpeedValue = (int) weatherDataCurrent.getWind().getSpeed();
             WeatherDescription[] weatherDescArray = weatherDataCurrent.getWeather();
             String weatherDesc = weatherDescArray[0].getDescription();
             double[] bihourlyTempsValue = bihourlyTemperatureData.getHourly().getEveryOtherTemp();
             String[] bihourlyTimesValue = bihourlyTemperatureData.getFormattedBihourlyTime();
 
-            //Set information for display
-            if(location.getState() != null) {
-                cityName.setText(location.getName() + ", " + location.getState() + ", " + countryName);
-            }
-            else cityName.setText(location.getName() + ", " + countryName);
-            setLocalTime(minute, hour);
+            // Set information for display
             setTexts(
-                    hour,
-                    minute,
+                    location,
+                    countryName,
+                    hourValue,
+                    minuteValue,
                     tempValue,
                     humidityValue,
                     pressureValue,
@@ -165,26 +159,39 @@ public class HomeController implements IController {
         }
     }
 
-    private void setLocalTime(AtomicInteger minute, int hour) {
+    private void setLocalTimeAndUpdate(int hourValue, int minuteValue) {
+        if (minuteValue >= 60) {
+            minuteValue = 0;
+            hourValue++;
+        }
+        if (hourValue >= 24) {
+            hourValue = 0;
+        }
+
+        String hourString = (hourValue < 10) ? "0" + hourValue : "" + hourValue;
+        String minuteString = (minuteValue < 10) ? "0" + minuteValue : "" + minuteValue;
+
+        localTime.setText(hourString + ":" + minuteString);
+
+        int finalHourValue = hourValue;
+        int finalMinuteValue = minuteValue;
         Timeline timeline =
                 new Timeline(
                         new KeyFrame(
                                 Duration.seconds(60),
-                                event -> {
-                                    minute.getAndIncrement();
-                                    if (minute.intValue() < 10) {
-                                        localTime.setText(hour + ":0" + minute);
-                                    } else {
-                                        localTime.setText(hour + ":" + minute);
-                                    }
-                                }));
-        timeline.setCycleCount(Timeline.INDEFINITE); // Continue indefinitely
+                                event ->
+                                        setLocalTimeAndUpdate(
+                                                finalHourValue, finalMinuteValue + 1)));
+        timeline.setCycleCount(
+                1); // No need to set INDEFINITE here because it will be recursively called anyway
         timeline.play();
     }
 
     private void setTexts(
-            int hour,
-            AtomicInteger minute,
+            Location location,
+            String countryName,
+            int hourValue,
+            int minuteValue,
             int tempValue,
             int humidityValue,
             int pressureValue,
@@ -192,7 +199,10 @@ public class HomeController implements IController {
             int feltTempValue,
             double windSpeedValue,
             String weatherDesc) {
-        localTime.setText(hour + ":" + minute);
+        if (location.getState() != null) {
+            cityName.setText(location.getName() + ", " + location.getState() + ", " + countryName);
+        } else cityName.setText(location.getName() + ", " + countryName);
+        setLocalTimeAndUpdate(hourValue, minuteValue);
         temp.setText(tempValue + " °C");
         humidity.setText("Humidity level: " + humidityValue + "%");
         pressure.setText("Pressure level: " + pressureValue + " hPa");
@@ -222,6 +232,7 @@ public class HomeController implements IController {
                 });
     }
 
+    // Helper method to capitalize first letter of every word in a String.
     private String toTitle(String str) {
         String[] words = str.split(" ");
         StringBuilder capitalized = new StringBuilder();

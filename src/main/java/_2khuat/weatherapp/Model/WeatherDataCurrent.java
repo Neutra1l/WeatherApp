@@ -13,6 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+/**
+ * Container for all necessary weather parameters of the current day.
+ */
 public class WeatherDataCurrent {
     private WeatherDescription[] weather;
     private MainWeatherFeatures main;
@@ -22,11 +25,10 @@ public class WeatherDataCurrent {
     private Daylight sys;
     private int timezone;
 
-    public String getFormattedTimezone(){
+    public String getFormattedTimezone() {
         int zone = timezone / 3600;
-        if(zone >= 0){
+        if (zone >= 0) {
             return "GMT+" + zone;
-        }
-        else return "GMT" + zone;
+        } else return "GMT" + zone;
     }
 }

@@ -17,5 +17,7 @@ module _2khuat.weatherapp {
 
     opens _2khuat.weatherapp.Client to
             javafx.fxml;
-    opens _2khuat.weatherapp.Model.Helper to com.google.gson, javafx.fxml;
+    opens _2khuat.weatherapp.Model.Helper to
+            com.google.gson,
+            javafx.fxml;
 }

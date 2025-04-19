@@ -1,9 +1,13 @@
+/* (C) 2025 */
 package _2khuat.weatherapp.Model.Helper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Container for temperature data recorded every hour within a given day. To be used within BihourlyTemperatureData container.
+ */
 @Setter
 @Getter
 @AllArgsConstructor
@@ -11,7 +15,7 @@ public class HourlyTemperature {
     private String[] time;
     private float[] temperature_2m;
 
-    public String[] getEveryOtherHour(){
+    public String[] getEveryOtherHour() {
         String[] timeStamps = new String[12];
         for (int i = 0, j = 0; i < time.length; i += 2, j++) {
             timeStamps[j] = time[i];
@@ -19,12 +23,11 @@ public class HourlyTemperature {
         return timeStamps;
     }
 
-    public double[] getEveryOtherTemp(){
+    public double[] getEveryOtherTemp() {
         double[] temps = new double[12];
         for (int i = 0, j = 0; i < time.length; i += 2, j++) {
             temps[j] = temperature_2m[i];
         }
         return temps;
     }
-
 }

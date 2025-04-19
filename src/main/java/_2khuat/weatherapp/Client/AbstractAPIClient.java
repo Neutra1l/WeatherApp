@@ -10,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Abstract class for all APIs to be used.
+ */
 public abstract class AbstractAPIClient {
     protected final String _apiKeyOpenWeather = "c7c6feca22d0f169d76feacae1e95ecd";
 

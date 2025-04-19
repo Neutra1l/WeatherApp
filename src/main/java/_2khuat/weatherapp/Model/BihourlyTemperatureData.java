@@ -2,20 +2,22 @@
 package _2khuat.weatherapp.Model;
 
 import _2khuat.weatherapp.Model.Helper.HourlyTemperature;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @AllArgsConstructor
 @Getter
 @Setter
+/**
+ * Container for temperature data, recorded every two hours on a given day.
+ */
 public class BihourlyTemperatureData {
     HourlyTemperature hourly;
 
-    public String[] getFormattedBihourlyTime(){
+    public String[] getFormattedBihourlyTime() {
         String[] bihourlyTime = hourly.getEveryOtherHour();
         String[] formattedTimeStamps = new String[bihourlyTime.length];
         int i = 0;
@@ -28,4 +30,3 @@ public class BihourlyTemperatureData {
         return formattedTimeStamps;
     }
 }
-

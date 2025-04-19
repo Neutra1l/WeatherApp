@@ -8,6 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Main entry point of the application.
+ */
 public class HelloApplication extends Application {
 
     @Override
