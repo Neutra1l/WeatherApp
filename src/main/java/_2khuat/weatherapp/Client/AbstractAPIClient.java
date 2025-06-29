@@ -3,18 +3,23 @@ package _2khuat.weatherapp.Client;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 /**
  * Abstract class for all APIs to be used.
  */
 public abstract class AbstractAPIClient {
-    protected final String _apiKeyOpenWeather = "c7c6feca22d0f169d76feacae1e95ecd";
+    protected final String _apiKeyOpenWeather = ConfigLoader.getAPIOpenWeather();
+
+    InputStream input = AbstractAPIClient.class.getClassLoader().getResourceAsStream("config.properties");
 
     protected JsonElement makeApiCall(String apiCall) {
         JsonElement jsonElement =

@@ -2,6 +2,8 @@
 package _2khuat.weatherapp;
 
 import java.io.IOException;
+
+import _2khuat.weatherapp.Client.ConfigLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +22,7 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {;
         launch();
     }
 }
